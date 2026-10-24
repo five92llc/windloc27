@@ -21,7 +21,6 @@ sealed class LockOverlay : Form
         TopMost = true;
         BackColor = Color.FromArgb(14, 14, 18);
         ForeColor = Color.WhiteSmoke;
-        Cursor = Cursors.None;
         Font = new Font("Segoe UI", 11f);
 
         if (fullScreen)
@@ -90,6 +89,18 @@ sealed class LockOverlay : Form
         var png = new PngByteQRCode(data).GetGraphic(10);
         using var ms = new MemoryStream(png);
         return new Bitmap(ms);
+    }
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        Cursor.Hide();
+    }
+
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        Cursor.Show();
+        base.OnFormClosed(e);
     }
 
     protected override void Dispose(bool disposing)
